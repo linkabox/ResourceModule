@@ -627,7 +627,7 @@ namespace ResourceModule
 					EditorUtility.DisplayDialog("提示", "生成补丁包出错！", "OK");
 				}
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				EditorUtility.ClearProgressBar();
 				EditorUtility.DisplayDialog("提示", "生成补丁包出错！", "OK");
@@ -667,7 +667,7 @@ namespace ResourceModule
 
 				EditorUtility.DisplayDialog("提示", "生成补丁包成功！", "OK");
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				EditorUtility.ClearProgressBar();
 				EditorUtility.DisplayDialog("提示", "生成补丁包出错！", "OK");

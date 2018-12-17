@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 namespace ResourceModule
@@ -454,6 +455,40 @@ namespace ResourceModule
 			return buildPlatformName;
 		}
 
+		#region Load Scene
+		public static SceneResolveLoader LoadScene(string sceneName, string package = null, LoadSceneMode mode = LoadSceneMode.Single, AbstractResourceLoader.LoaderDelgate callback = null)
+		{
+			var request = SceneResolveLoader.Load(sceneName, package, mode, callback, LoaderMode.Sync);
+			return request;
+		}
+
+		public static SceneResolveLoader LoadSceneAsync(string sceneName, string package = null, LoadSceneMode mode = LoadSceneMode.Single, AbstractResourceLoader.LoaderDelgate callback = null)
+		{
+			var request = SceneResolveLoader.Load(sceneName, package, mode, callback);
+			return request;
+		}
+
+		public static void UnloadScene(string sceneName, SceneResolveLoader.OnUnloadScene callback = null)
+		{
+			var loader = AbstractResourceLoader.GetLoader<SceneResolveLoader>(sceneName);
+			if (loader != null)
+			{
+				loader.UnloadScene(callback, LoaderMode.Sync);
+			}
+		}
+
+		public static void UnloadSceneAsync(string sceneName, SceneResolveLoader.OnUnloadScene callback = null)
+		{
+			var loader = AbstractResourceLoader.GetLoader<SceneResolveLoader>(sceneName);
+			if (loader != null)
+			{
+				loader.UnloadScene(callback);
+			}
+		}
+		#endregion
+
+		#region Load Asset
+
 		/// <summary>
 		/// Load Async Asset Bundle
 		/// </summary>
@@ -489,6 +524,8 @@ namespace ResourceModule
 			var request = AssetResolveLoader.LoadAll(path, package, type, callback, LoaderMode.Sync);
 			return request;
 		}
+
+		#endregion
 
 		/// <summary>
 		/// check file exists of streamingAssets. On Android will use plugin to do that.

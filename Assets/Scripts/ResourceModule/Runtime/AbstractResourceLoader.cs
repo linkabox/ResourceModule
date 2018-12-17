@@ -166,6 +166,11 @@ namespace ResourceModule
 		/// </summary>
 		public int RefCount { get; private set; }
 
+		public virtual bool IsUnique
+		{
+			get { return false; }
+		}
+
 		public string Url { get; private set; }
 
 		/// <summary>
@@ -186,6 +191,17 @@ namespace ResourceModule
 				typesDict = LoadersPool[type] = new Dictionary<string, AbstractResourceLoader>();
 			}
 			return typesDict;
+		}
+
+		public static T GetLoader<T>(string url) where T : AbstractResourceLoader
+		{
+			var dict = GetTypeDict(typeof(T));
+			AbstractResourceLoader loader = null;
+			if (dict.TryGetValue(url, out loader))
+			{
+				return (T)loader;
+			}
+			return null;
 		}
 
 		public static int GetRefCount<T>(string url)
@@ -241,7 +257,8 @@ namespace ResourceModule
 				}
 			}
 
-			loader.RefCount++;
+			if (!loader.IsUnique || loader.RefCount == 0)
+				loader.RefCount++;
 
 			// RefCount++了，重新激活，在队列中准备清理的Loader
 			if (UnUsesLoaders.ContainsKey(loader))
