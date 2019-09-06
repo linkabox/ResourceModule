@@ -12,3 +12,5 @@
 ### 引用外部库
 - [SharpZipLib](https://github.com/icsharpcode/SharpZipLib)
 - [LitJson](https://github.com/LitJSON/litjson)
+- [DOTween](http://dotween.demigiant.com/documentation.php)
+- [UIEffect](https://github.com/mob-sakai/UIEffect)

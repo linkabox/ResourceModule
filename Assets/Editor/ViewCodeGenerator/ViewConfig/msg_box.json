@@ -1,0 +1,41 @@
+
+{
+    "name" : "msg_box",
+    "components" : [
+        {
+            "uid" : "content/msg_Text",
+            "comType" : "Text",
+            "fulleTypeName" : "UnityEngine.UI.Text",
+            "member"        : "msg",
+            "path"          : "content/msg"
+        },
+        {
+            "uid" : "content/btn_1_Button",
+            "comType" : "Button",
+            "fulleTypeName" : "UnityEngine.UI.Button",
+            "member"        : "btn_1",
+            "path"          : "content/btn_1"
+        },
+        {
+            "uid" : "content/btn_2_Button",
+            "comType" : "Button",
+            "fulleTypeName" : "UnityEngine.UI.Button",
+            "member"        : "btn_2",
+            "path"          : "content/btn_2"
+        },
+        {
+            "uid" : "content/btn_1/btn_1_lbl_Text",
+            "comType" : "Text",
+            "fulleTypeName" : "UnityEngine.UI.Text",
+            "member"        : "btn_1_lbl",
+            "path"          : "content/btn_1/btn_1_lbl"
+        },
+        {
+            "uid" : "content/btn_2/btn_2_lbl_Text",
+            "comType" : "Text",
+            "fulleTypeName" : "UnityEngine.UI.Text",
+            "member"        : "btn_2_lbl",
+            "path"          : "content/btn_2/btn_2_lbl"
+        }
+    ]
+}
