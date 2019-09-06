@@ -47,7 +47,7 @@ public class TestDriver : MonoBehaviour
 
 		if (GUILayout.Button("UnLoad TestScene Sync"))
 		{
-			ResManager.UnloadScene("Scenes/Test.unity", () =>
+			ResManager.UnloadSceneAsync("Scenes/Test.unity", () =>
 			{
 				Debug.LogError("UnloadSync TestScene Finish");
 			});

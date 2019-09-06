@@ -469,22 +469,14 @@ namespace ResourceModule
             return request;
         }
 
-        public static void UnloadScene(string sceneName, SceneResolveLoader.OnUnloadScene callback = null)
-        {
-            var loader = AbstractResourceLoader.GetLoader<SceneResolveLoader>(sceneName);
-            if (loader != null)
-            {
-                loader.UnloadScene(callback, LoaderMode.Sync);
-            }
-        }
-
+        /// <summary>
+        /// 一般只有Addtive方式加载的Scene需要使用到异步Unload
+        /// </summary>
+        /// <param name="sceneName"></param>
+        /// <param name="callback"></param>
         public static void UnloadSceneAsync(string sceneName, SceneResolveLoader.OnUnloadScene callback = null)
         {
-            var loader = AbstractResourceLoader.GetLoader<SceneResolveLoader>(sceneName);
-            if (loader != null)
-            {
-                loader.UnloadScene(callback);
-            }
+            SceneResolveLoader.UnloadSceneAsync(sceneName, callback);
         }
         #endregion
 

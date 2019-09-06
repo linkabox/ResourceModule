@@ -54,3 +54,4 @@ build/luac/build64
 _GameBundles/
 Assets/StreamingAssets*
 Assets/BundleResources/Lua/LuaPackedCode*
+Logs/
