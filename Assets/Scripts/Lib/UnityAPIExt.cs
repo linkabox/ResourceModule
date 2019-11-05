@@ -6,9 +6,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-//using XLua;
+using XLua;
 
-//[LuaCallCSharp]
+[LuaCallCSharp]
 public static class UnityAPIExt
 {
     /// <summary>
