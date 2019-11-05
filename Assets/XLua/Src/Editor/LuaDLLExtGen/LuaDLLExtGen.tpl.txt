@@ -1,0 +1,62 @@
+<%
+--<默认C库名,注册接口>
+local clibs = {}
+--table.insert(clibs,{"socket.core", "luaopen_socket_core"})
+
+table.insert(clibs,{"core.clib.world_c", "luaopen_core_clib_world_c"})
+table.insert(clibs,{"core.clib.rvo2", "luaopen_rvo2"})
+
+table.insert(clibs,{"core.rapidjson", "luaopen_rapidjson"})
+table.insert(clibs,{"ejoy2dx.sproto.c", "luaopen_sproto_core"})
+table.insert(clibs,{"ejoy2dx.lpeg.c", "luaopen_lpeg"})
+table.insert(clibs,{"ejoy2dx.crypt.c", "luaopen_crypt"})
+table.insert(clibs,{"ejoy2dx.rc4.c", "luaopen_rc4_c"})
+table.insert(clibs,{"ejoy2dx.md5.c", "luaopen_md5"})
+table.insert(clibs,{"ejoy2dx.lzma.c", "luaopen_lzma"})
+table.insert(clibs,{"ejoy2dx.socket.c", "luaopen_lsocket"})
+table.insert(clibs,{"sconn_socket.c", "luaopen_sconn_socket"})
+table.insert(clibs,{"ejoy2dx.timesync.c", "luaopen_timesync"})
+table.insert(clibs,{"ejoy2dx.timer.c", "luaopen_timer_c"})
+
+--<额外C库名，引用上面的注册接口>
+local extlibs = {}
+--table.insert(extlibs,{"socket", "luaopen_socket_core"})
+%>
+using System;
+using System.Runtime.InteropServices;
+
+using LuaAPI = XLua.LuaDLL.Lua;
+using RealStatePtr = System.IntPtr;
+using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
+
+namespace XLua.LuaDLL
+{
+	public partial class Lua
+	{
+		<%for i,v in ipairs(clibs) do%>
+		[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int <%=v[2]%>(System.IntPtr L);
+
+		[MonoPInvokeCallback(typeof(LuaCSFunction))]
+		internal static int <%="cs_"..v[2]%>(RealStatePtr L)
+		{
+			return <%=v[2]%>(L);
+		}
+		<%end%>
+	}
+}
+
+namespace XLua
+{
+	public static class LuaDLLExt
+	{
+		public static void AddLib(LuaEnv env)
+		{
+			<%for i,v in ipairs(clibs) do%>env.AddBuildin("<%=v[1]%>", LuaDLL.Lua.<%="cs_"..v[2]%>);
+			<%end%>
+			<%for i,v in ipairs(extlibs) do%>env.AddBuildin("<%=v[1]%>", LuaDLL.Lua.<%="cs_"..v[2]%>);
+			<%end%>
+		}
+	}
+}
+
