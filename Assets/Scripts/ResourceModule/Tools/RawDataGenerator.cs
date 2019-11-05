@@ -15,18 +15,18 @@ namespace ResourceModule
     {
         public static string RawDataDir = Application.dataPath + "/../raw_data";
 
+#if UNITY_EDITOR && !UNITY_EDITOR_OSX
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void CheckRawData()
         {
-#if UNITY_EDITOR && !UNITY_EDITOR_OSX
             var activeScene = EditorSceneManager.GetActiveScene();
             if (activeScene.name == "GameMain")
             {
                 //Win下检查配表数据变动，重新生成
                 ResourceModule.RawDataGenerator.GenRawConfigData();
             }
-#endif
         }
+#endif
 
         public static void GenRawConfigData(bool force = false)
         {

@@ -20,7 +20,7 @@ namespace ResourceModule
 			{
 				if (_helper != null) return _helper;
 
-				_helper = new AndroidJavaClass("com.unity3d.resourcemodule.AndroidHelper");
+				_helper = new AndroidJavaClass("com.resourcemodule.AndroidHelper");
 
 				if (_helper == null)
 					ErrorNotSupport();
