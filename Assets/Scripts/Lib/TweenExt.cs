@@ -221,6 +221,17 @@ public static class TweenExt
         return tween;
     }
 
+    public static Tweener DOFillText(this Image target, float endValue, Text uiText, float endTextValue, float duration, string format = "{0}/{1}")
+    {
+        var tween = target.DOFillAmount(endValue, duration).OnUpdate(() =>
+        {
+            var curVal = Mathf.FloorToInt(target.fillAmount * endTextValue);
+            uiText.text = string.Format(format, curVal, endTextValue);
+        });
+        tween.SetTarget(target);
+        return tween;
+    }
+
     public static Tweener DOSizeDelta(this RectTransform target, float x, float y, float duration, bool snapping = false)
     {
         return DOTweenModuleUI.DOSizeDelta(target, new Vector2(x, y), duration, snapping);

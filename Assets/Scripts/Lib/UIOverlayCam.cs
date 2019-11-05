@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class UIOverlayCam : MonoBehaviour
 {
+    public bool landscape;
     private Camera mCam;
 
     void Awake()
@@ -40,8 +41,17 @@ public class UIOverlayCam : MonoBehaviour
         float sw = Screen.width;
         float sh = Screen.height;
 
-        mCam.orthographicSize = sh / 2f;
-        mCam.transform.localPosition = new Vector3(sw / 2f, sh / 2f, 0);
-        Debug.LogFormat("Reset UIOverlayCam:({0},{1})  {2}  {3}", sw, sh, mCam.orthographicSize, mCam.transform.localPosition);
+        if (landscape)
+        {
+            mCam.orthographicSize = sh / 2f;
+            mCam.transform.localPosition = new Vector3(sw / 2f, sh / 2f, 0);
+            Debug.LogFormat("Reset UIOverlayCam:({0},{1})  {2}  {3}", sw, sh, mCam.orthographicSize, mCam.transform.localPosition);
+        }
+        else
+        {
+            mCam.orthographicSize = sw / 2f;
+            mCam.transform.localPosition = new Vector3(sh / 2f, sw / 2f, 0);
+            Debug.LogFormat("Reset UIOverlayCam:({0},{1})  {2}  {3}", sh, sw, mCam.orthographicSize, mCam.transform.localPosition);
+        }
     }
 }

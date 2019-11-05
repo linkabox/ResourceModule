@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 public class ButtonTweener : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerDownHandler
 {
     public Animator animator;
-    public bool shake;
 
     private bool isPress;
     // Use this for initialization
@@ -14,8 +13,6 @@ public class ButtonTweener : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (animator == null)
             animator = this.GetComponent<Animator>();
-        if (shake)
-            animator.SetTrigger("Shake");
     }
 
     public void OnPointerUp(PointerEventData eventData)

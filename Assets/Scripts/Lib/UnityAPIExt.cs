@@ -66,6 +66,8 @@ public static class UnityAPIExt
                 return child;
             }
             result = FindChildByName(child, childName);
+            if (result)
+                return result;
         }
 
         return result;
