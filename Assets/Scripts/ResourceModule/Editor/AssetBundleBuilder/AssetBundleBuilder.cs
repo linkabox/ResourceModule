@@ -58,130 +58,134 @@ namespace ResourceModule
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginVertical(GUILayout.MinWidth(400f), GUILayout.MaxWidth(400f)); //Left Cotent Begin
-            if (!ResManager.IsLoadAssetBundle)
+            _leftContentScroll = EditorGUILayout.BeginScrollView(_leftContentScroll);
             {
-                GUILayout.Label("当前不是使用AssetBundle加载模式");
-            }
-            else
-            {
-                _leftContentScroll = EditorGUILayout.BeginScrollView(_leftContentScroll);
+                //BundleName处理
+                EditorGUILayout.BeginVertical("HelpBox");
                 {
-                    //BundleName处理
-                    EditorGUILayout.BeginVertical("HelpBox");
+                    GUILayout.Label("BundleName处理", "BoldLabel");
+                    //if (GUILayout.Button("修复所有BundleName", "LargeButton", GUILayout.Height(50f)))
+                    //{
+                    //    if (EditorUtility.DisplayDialog("确认", "是否重新设置所有资源BundleName?", "继续", "取消"))
+                    //    {
+                    //        EditorApplication.delayCall += FixBundleNames;
+                    //        _rightTab = 0;
+                    //    }
+                    //}
+                    //EditorGUILayout.Space();
+
+                    if (GUILayout.Button("清空未使用的BundleName", "LargeButton", GUILayout.Height(50f)))
                     {
-                        GUILayout.Label("BundleName处理", "BoldLabel");
-                        //if (GUILayout.Button("修复所有BundleName", "LargeButton", GUILayout.Height(50f)))
-                        //{
-                        //    if (EditorUtility.DisplayDialog("确认", "是否重新设置所有资源BundleName?", "继续", "取消"))
-                        //    {
-                        //        EditorApplication.delayCall += FixBundleNames;
-                        //        _rightTab = 0;
-                        //    }
-                        //}
-                        //EditorGUILayout.Space();
-
-                        if (GUILayout.Button("清空未使用的BundleName", "LargeButton", GUILayout.Height(50f)))
-                        {
-                            if (EditorUtility.DisplayDialog("确认", "是否清空未使用的BundleName?", "Yes", "No"))
-                            {
-                                EditorApplication.delayCall += () =>
-                                {
-                                    CleanUpBundleName(false);
-                                };
-                            }
-                        }
-                        EditorGUILayout.Space();
-
-                        if (GUILayout.Button("清空全部的BundleName", "LargeButton", GUILayout.Height(50f)))
-                        {
-                            if (EditorUtility.DisplayDialog("确认", "是否清空全部的BundleName?", "Yes", "No"))
-                            {
-                                EditorApplication.delayCall += () =>
-                                {
-                                    CleanUpBundleName(true);
-                                };
-                            }
-                        }
-                        EditorGUILayout.Space();
-                    }
-                    EditorGUILayout.EndVertical();
-
-                    //打包选项
-                    EditorGUILayout.BeginVertical("HelpBox");
-                    {
-                        GUILayout.Label("打包", "BoldLabel");
-                        if (GUILayout.Button("一键打包新版本资源", "LargeButton", GUILayout.Height(50f)))
-                        {
-                            int option = EditorUtility.DisplayDialogComplex("确认", string.Format("是否更新 res_ver: {0} ?", GetCurResVersion()), "版本号不变", "版本号+1", "取消");
-                            if (option < 2)
-                            {
-                                EditorApplication.delayCall += () =>
-                                {
-                                    OneKeyBuildGameRes(true, option > 0);
-                                };
-                                _rightTab = 0;
-                            }
-                        }
-                        if (GUILayout.Button("打包新版本资源(不拷贝到StreamingAssets)", "LargeButton", GUILayout.Height(50f)))
-                        {
-                            int option = EditorUtility.DisplayDialogComplex("确认", string.Format("是否更新 res_ver: {0} ?", GetCurResVersion()), "版本号不变", "版本号+1", "取消");
-                            if (option < 2)
-                            {
-                                EditorApplication.delayCall += () =>
-                                {
-                                    OneKeyBuildGameRes(false, option > 0);
-                                };
-                                _rightTab = 0;
-                            }
-                        }
-                        EditorGUILayout.Space();
-
-                        if (GUILayout.Button("加密所有LuaCode", "LargeButton", GUILayout.Height(50f)))
-                        {
-                            if (EditorUtility.DisplayDialog("确认", "是否重新加密所有LuaCode?", "继续", "取消"))
-                            {
-                                EditorApplication.delayCall += EncryptLuaCode;
-                                _rightTab = 0;
-                            }
-                        }
-                        EditorGUILayout.Space();
-
-                        if (GUILayout.Button("生成包内整包资源", "LargeButton", GUILayout.Height(50f)))
+                        if (EditorUtility.DisplayDialog("确认", "是否清空未使用的BundleName?", "Yes", "No"))
                         {
                             EditorApplication.delayCall += () =>
                             {
-                                string backupDir = EditorUtility.OpenFolderPanel("选择资源备份目录", BackupExportPath, "");
-                                CopyToStreamingAssets(backupDir);
+                                CleanUpBundleName(false);
                             };
                         }
-                        EditorGUILayout.Space();
                     }
-                    EditorGUILayout.EndVertical();
 
-                    //补丁
-                    EditorGUILayout.BeginVertical("HelpBox");
+                    EditorGUILayout.Space();
+
+                    if (GUILayout.Button("清空全部的BundleName", "LargeButton", GUILayout.Height(50f)))
                     {
-                        GUILayout.Label("补丁", "BoldLabel");
-                        if (GUILayout.Button("生成最新版本补丁包", "LargeButton", GUILayout.Height(50f)))
+                        if (EditorUtility.DisplayDialog("确认", "是否清空全部的BundleName?", "Yes", "No"))
                         {
-                            EditorApplication.delayCall += GenLastestPatch;
+                            EditorApplication.delayCall += () =>
+                            {
+                                CleanUpBundleName(true);
+                            };
                         }
-                        EditorGUILayout.Space();
-                        if (GUILayout.Button("生成到指定版本补丁包\n如：0.0.1 → 0.0.6", "LargeButton", GUILayout.Height(50f)))
-                        {
-                            EditorApplication.delayCall += GenPatch;
-                        }
-                        EditorGUILayout.Space();
-                        if (GUILayout.Button("递进生成所有版本补丁包\n如：0.1 → 0.2 → 0.3", "LargeButton", GUILayout.Height(50f)))
-                        {
-                            EditorApplication.delayCall += GenPatchLink;
-                        }
-                        EditorGUILayout.Space();
                     }
-                    EditorGUILayout.EndVertical();
+
+                    EditorGUILayout.Space();
                 }
-                EditorGUILayout.EndScrollView();
+                EditorGUILayout.EndVertical();
+
+                //打包选项
+                EditorGUILayout.BeginVertical("HelpBox");
+                {
+                    GUILayout.Label("打包", "BoldLabel");
+                    if (GUILayout.Button("一键打包新版本资源", "LargeButton", GUILayout.Height(50f)))
+                    {
+                        int option = EditorUtility.DisplayDialogComplex("确认",
+                            string.Format("是否更新 res_ver: {0} ?", GetCurResVersion()), "版本号不变", "版本号+1", "取消");
+                        if (option < 2)
+                        {
+                            EditorApplication.delayCall += () =>
+                            {
+                                OneKeyBuildGameRes(true, option > 0);
+                            };
+                            _rightTab = 0;
+                        }
+                    }
+
+                    if (GUILayout.Button("打包新版本资源(不拷贝到StreamingAssets)", "LargeButton", GUILayout.Height(50f)))
+                    {
+                        int option = EditorUtility.DisplayDialogComplex("确认",
+                            string.Format("是否更新 res_ver: {0} ?", GetCurResVersion()), "版本号不变", "版本号+1", "取消");
+                        if (option < 2)
+                        {
+                            EditorApplication.delayCall += () =>
+                            {
+                                OneKeyBuildGameRes(false, option > 0);
+                            };
+                            _rightTab = 0;
+                        }
+                    }
+
+                    EditorGUILayout.Space();
+
+                    if (GUILayout.Button("加密所有LuaCode", "LargeButton", GUILayout.Height(50f)))
+                    {
+                        if (EditorUtility.DisplayDialog("确认", "是否重新加密所有LuaCode?", "继续", "取消"))
+                        {
+                            EditorApplication.delayCall += EncryptLuaCode;
+                            _rightTab = 0;
+                        }
+                    }
+
+                    EditorGUILayout.Space();
+
+                    if (GUILayout.Button("生成包内整包资源", "LargeButton", GUILayout.Height(50f)))
+                    {
+                        EditorApplication.delayCall += () =>
+                        {
+                            string backupDir = EditorUtility.OpenFolderPanel("选择资源备份目录", BackupExportPath, "");
+                            CopyToStreamingAssets(backupDir);
+                        };
+                    }
+
+                    EditorGUILayout.Space();
+                }
+                EditorGUILayout.EndVertical();
+
+                //补丁
+                EditorGUILayout.BeginVertical("HelpBox");
+                {
+                    GUILayout.Label("补丁", "BoldLabel");
+                    if (GUILayout.Button("生成最新版本补丁包", "LargeButton", GUILayout.Height(50f)))
+                    {
+                        EditorApplication.delayCall += GenLastestPatch;
+                    }
+
+                    EditorGUILayout.Space();
+                    if (GUILayout.Button("生成到指定版本补丁包\n如：0.0.1 → 0.0.6", "LargeButton", GUILayout.Height(50f)))
+                    {
+                        EditorApplication.delayCall += GenPatch;
+                    }
+
+                    EditorGUILayout.Space();
+                    if (GUILayout.Button("递进生成所有版本补丁包\n如：0.1 → 0.2 → 0.3", "LargeButton", GUILayout.Height(50f)))
+                    {
+                        EditorApplication.delayCall += GenPatchLink;
+                    }
+
+                    EditorGUILayout.Space();
+                }
+                EditorGUILayout.EndVertical();
             }
+            EditorGUILayout.EndScrollView();
             EditorGUILayout.EndVertical(); //Left Cotent End
 
             GUILayout.Space(5f);

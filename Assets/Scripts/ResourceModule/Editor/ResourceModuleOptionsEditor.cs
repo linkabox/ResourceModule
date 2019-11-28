@@ -52,14 +52,12 @@ namespace ResourceModule.Editor
 
 		private readonly GUIStyle _headerStyle = new GUIStyle();
 		private bool _isEditorMode;
-		private bool _loadAssetBundle;
 		private bool _loadPackedLuaCode;
 		private float _loadDelay;
 
 		private void OnEnable()
 		{
 			_isEditorMode = PlayerPrefs.GetInt(ResourceModuleConfig.IsEdiotrMode, 1) != 0;
-			_loadAssetBundle = PlayerPrefs.GetInt(ResourceModuleConfig.IsLoadAssetBundle, 1) != 0;
 			_loadPackedLuaCode = PlayerPrefs.GetInt(ResourceModuleConfig.LoadPackedLuaCode, 0) != 0;
 			_loadDelay = PlayerPrefs.GetFloat(ResourceModuleConfig.EditorModeLoadDelay, 0.25f);
 
@@ -82,16 +80,11 @@ namespace ResourceModule.Editor
 			EditorGUILayout.LabelField("EditorMode下模拟加载延迟");
 			EditorGUILayout.Space();
 
-			_loadAssetBundle = EditorGUILayout.Toggle("Load AssetBundle:", _loadAssetBundle);
-			EditorGUILayout.LabelField("关闭该选项时，使用Resource模式加载");
-			EditorGUILayout.Space();
-
 			EditorGUILayout.BeginHorizontal();
 			GUILayout.FlexibleSpace();
 			if (GUILayout.Button("保存配置", "LargeButton", GUILayout.Height(50f)))
 			{
 				PlayerPrefs.SetInt(ResourceModuleConfig.IsEdiotrMode, _isEditorMode ? 1 : 0);
-				PlayerPrefs.SetInt(ResourceModuleConfig.IsLoadAssetBundle, _loadAssetBundle ? 1 : 0);
 				PlayerPrefs.SetInt(ResourceModuleConfig.LoadPackedLuaCode, _loadPackedLuaCode ? 1 : 0);
 				PlayerPrefs.SetFloat(ResourceModuleConfig.EditorModeLoadDelay, _loadDelay);
 				Debug.Log("Save ResourceModuleConfig!");

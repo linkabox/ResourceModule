@@ -125,33 +125,6 @@ namespace ResourceModule
                 Debug.LogErrorFormat("`IsEditorLoadAsset` is Unity Editor only");
 #endif
             }
-            else if (!ResManager.IsLoadAssetBundle)
-            {
-                path = path.Remove(path.Length - Path.GetExtension(path).Length);
-                if (loadAll)
-                {
-                    //Resources加载不支持异步LoadAll
-                    getAsset = Resources.LoadAll(path, type);
-                }
-                else
-                {
-                    if (loaderMode == LoaderMode.Sync)
-                    {
-                        getAsset = Resources.Load(path, type);
-                    }
-                    else
-                    {
-                        var request = Resources.LoadAsync(path, type);
-                        yield return request;
-                        getAsset = request.asset;
-                    }
-                }
-
-                if (getAsset == null)
-                {
-                    Debug.LogErrorFormat("Asset is NULL(from Resources Folder): {0}", path);
-                }
-            }
             else
             {
                 DateTime beginTime = DateTime.Now;

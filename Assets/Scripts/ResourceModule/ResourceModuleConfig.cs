@@ -13,7 +13,6 @@ namespace ResourceModule
 
         public const string IsEdiotrMode = "IsEdiotrMode";
         public const string EditorModeLoadDelay = "EditorModeLoadDelay";
-        public const string IsLoadAssetBundle = "IsLoadAssetBundle";
         public const string LoadPackedLuaCode = "LoadPackedLuaCode";
     }
 }

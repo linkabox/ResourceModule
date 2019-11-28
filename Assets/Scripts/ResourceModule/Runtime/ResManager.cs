@@ -324,17 +324,6 @@ namespace ResourceModule
             }
         }
 
-        public static bool IsLoadAssetBundle
-        {
-            get
-            {
-#if UNITY_EDITOR
-                return PlayerPrefs.GetInt(ResourceModuleConfig.IsLoadAssetBundle, 1) != 0;
-#else
-				return true;
-#endif
-            }
-        }
         /// <summary>
         /// (not android ) only! Android资源不在目录！
         /// Editor返回文件系统目录，运行时返回StreamingAssets目录
@@ -547,26 +536,11 @@ namespace ResourceModule
 #if UNITY_ANDROID
             return ResAndroidPlugin.GetAssetBytes(path);
 #else
-			return ReadAllBytes(Path.Combine(Application.streamingAssetsPath, path));
+            return File.ReadAllBytes(Path.Combine(Application.streamingAssetsPath, path));
 #endif
         }
 
-        /// <summary>
-        /// 无视锁文件，直接读bytes
-        /// </summary>
-        /// <param name="resPath"></param>
-        public static byte[] ReadAllBytes(string resPath)
-        {
-            byte[] bytes;
-            using (FileStream fs = File.Open(resPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                bytes = new byte[fs.Length];
-                fs.Read(bytes, 0, (int)fs.Length);
-            }
-            return bytes;
-        }
-
-        public static string ReadBundleText(string path)
+        public static string ReadAllText(string path)
         {
             string fullPath;
             var getResPathType = GetBundleFullPath(path, out fullPath);
@@ -582,10 +556,9 @@ namespace ResourceModule
         }
 
 
-        public static byte[] ReadBundleBytes(string path)
+        public static byte[] ReadAllBytes(string path)
         {
-            string fullPath;
-            var getResPathType = GetBundleFullPath(path, out fullPath);
+            var getResPathType = GetBundleFullPath(path, out var fullPath);
             if (getResPathType == ResPathType.Invalid) return null;
 
 #if UNITY_ANDROID
