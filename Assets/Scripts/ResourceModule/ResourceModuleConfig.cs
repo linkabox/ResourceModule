@@ -5,7 +5,7 @@ namespace ResourceModule
     {
         //编辑器下需要打包为Bundle的资源根目录
         public const string BundleResoucesDir = "Assets/BundleResources";
-        public const string GameResourcesDir = "Assets/GameRes";
+        public const string GameResourcesDir = "Assets/BundleResources";//"Assets/GameRes";
         public const string AssetBundleExt = ".bytes";
         public const string LuaBundleName = "lua";
         public const string ResVerFileName = "res_ver.txt";

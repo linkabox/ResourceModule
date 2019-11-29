@@ -630,17 +630,6 @@ namespace ResourceModule
 
         #region Patch
 
-        public class PatchInfo
-        {
-            public string version; //当前版本
-            public string nextVer; //升级版本
-            public string hash;    //补丁包MD5值
-            public long fileSize;  //补丁包文件大小
-            public string fileName;
-
-            public Dictionary<string, string> fileHash;
-        }
-
         /// <summary>
         /// 生成升级到指定版本的补丁包
         /// 如果选择同版本目录，则只生成patch_info.json,一般用于生成最新版本的patch_info.json，用于热更流程中判断是否升级到最新版本

@@ -4,7 +4,7 @@ using ResourceModule;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TestDriver : MonoBehaviour
+public class LoadTest : MonoBehaviour
 {
 	public LoadSceneMode LoadSceneMode;
 	public Transform canvas;
@@ -36,26 +36,9 @@ public class TestDriver : MonoBehaviour
 
 		}
 
-		if (GUILayout.Button("Load TestScene Sync"))
+        if (GUILayout.Button("Load Scene ASync"))
 		{
-			var loader = ResManager.LoadScene("Scenes/Test.unity", null, LoadSceneMode, (
-				(ok, resultObject) =>
-				{
-					Debug.LogError("LoadScene Test Sync Callback:" + ok);
-				}));
-		}
-
-		if (GUILayout.Button("UnLoad TestScene Sync"))
-		{
-			ResManager.UnloadSceneAsync("Scenes/Test.unity", () =>
-			{
-				Debug.LogError("UnloadSync TestScene Finish");
-			});
-		}
-
-		if (GUILayout.Button("Load Scene ASync"))
-		{
-			var loader = ResManager.LoadSceneAsync("Scenes/BattleScene.unity", null, LoadSceneMode, (
+			var loader = ResManager.LoadSceneAsync("Scenes/BattleScene.unity", null, LoadSceneMode.Additive, (
 				(ok, resultObject) =>
 				{
 					Debug.LogError("LoadScene ASync Callback:" + ok);

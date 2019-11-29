@@ -1,0 +1,14 @@
+
+{
+    "version" : "0.0.1",
+    "nextVer" : "0.0.2",
+    "hash"    : "5756eb587fbf0174016a94b0cdc4449d",
+    "fileSize" : 2621913,
+    "fileName" : "patch_0.0.1_0.0.2-5756eb587fbf0174016a94b0cdc4449d.zip",
+    "fileHash" : {
+        "uiprefabs.bytes" : "6a878ef5061e91b57c6ad1ffeee8d4a4ea28039a241e26f62befd399d26b73d0",
+        "rawimages/loading_bg.png.bytes" : "67d76a71b4e45d47a774b630ae950033eadc27eecc498308c9c13430873554ae",
+        "rawimages/lobby_bg.png.bytes"   : "5be1c1eb72bf67355a5f0042a3a7f090fb3260f25aae163e0cc68046e3877b39",
+        "Android"                        : "c9bafdfdd0ad3320eb563e4740a747111c567141226503b4937f504c8f91da2a"
+    }
+}

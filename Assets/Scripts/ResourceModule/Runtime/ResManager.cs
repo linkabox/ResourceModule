@@ -528,7 +528,7 @@ namespace ResourceModule
         /// </summary>
         /// <param name="path">relative path,  when file is "file:///android_asset/test.txt", the pat is "test.txt"</param>
         /// <returns></returns>
-        public static byte[] LoadSyncFromStreamingAssets(string path)
+        public static byte[] LoadByteFromStreamingAssets(string path)
         {
             if (!IsStreamingAssetsExists(path))
                 throw new Exception("Not exist StreamingAssets path: " + path);
@@ -537,6 +537,18 @@ namespace ResourceModule
             return ResAndroidPlugin.GetAssetBytes(path);
 #else
             return File.ReadAllBytes(Path.Combine(Application.streamingAssetsPath, path));
+#endif
+        }
+
+        public static string LoadTextFromStreamingAssets(string path)
+        {
+            if (!IsStreamingAssetsExists(path))
+                throw new Exception("Not exist StreamingAssets path: " + path);
+
+#if UNITY_ANDROID
+            return ResAndroidPlugin.GetAssetString(path);
+#else
+            return File.ReadAllText(Path.Combine(Application.streamingAssetsPath, path));
 #endif
         }
 

@@ -40,6 +40,7 @@ namespace ResourceModule
             Instance.StartCoroutine(TrySendRequest(url, UnityWebRequest.Get, onFinish, onError, onProgress, maxRetry, retryDelay));
         }
 
+        #region Download
         public static void Download(string url, string savePath, OnRequestSuccess onFinish, OnRequestError onError,
             OnRequestProgress onProgress, int maxRetry = 3, float retryDelay = 1.0f)
         {
@@ -58,6 +59,77 @@ namespace ResourceModule
                 return uwr;
             }, onFinish, onError, onProgress, maxRetry, retryDelay));
         }
+
+        public static void DownloadFile(string url, string savePath,
+            OnRequestSuccess onDownloadStart,
+            OnRequestSuccess onFinish,
+            OnRequestError onError,
+            OnRequestProgress onProgress)
+        {
+            string dir = Path.GetDirectoryName(savePath);
+            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            Instance.StartCoroutine(_DownloadFile(url, savePath, onDownloadStart, onFinish, onError, onProgress));
+        }
+
+        private static IEnumerator _DownloadFile(string url, string savePath,
+            OnRequestSuccess onDownloadStart,
+            OnRequestSuccess onFinish,
+            OnRequestError onError,
+            OnRequestProgress onProgress)
+        {
+            var headRequest = UnityWebRequest.Head(url);
+            yield return headRequest.SendWebRequest();
+
+            var totalSize = long.Parse(headRequest.GetResponseHeader("Content-Length"));
+            var fileInfo = new FileInfo(savePath);
+            if (fileInfo.Exists && fileInfo.Length == totalSize)
+            {
+                onFinish?.Invoke(headRequest);
+            }
+            else
+            {
+                using (var request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbGET))
+                {
+                    var handler = new DownloadHandlerFileRange(savePath, request);
+                    request.downloadHandler = handler;
+                    onDownloadStart?.Invoke(request);
+
+                    var asyncOp = request.SendWebRequest();
+                    while (!asyncOp.isDone)
+                    {
+                        yield return null;
+                        onProgress?.Invoke(asyncOp);
+                    }
+
+                    if (request.isNetworkError || request.isHttpError)
+                    {
+                        handler.Close();
+                        if (onError != null)
+                        {
+                            Debug.LogWarningFormat("SendRequest Failed:\nresponseCode :{0}\nerror :{1}\nurl:{2}",
+                                request.responseCode, request.error, request.url);
+                            onError(request);
+                        }
+                        else
+                        {
+                            Debug.LogErrorFormat("SendRequest Failed:\nresponseCode :{0}\nerror :{1}\nurl:{2}",
+                                request.responseCode, request.error, request.url);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogFormat("Finish UnityWebRequest: {0}\nresponseCode :{1}", request.url,
+                            request.responseCode);
+                        onFinish?.Invoke(request);
+                    }
+                }
+            }
+        }
+        #endregion
 
         #region POST
 
